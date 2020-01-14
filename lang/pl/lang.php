@@ -2,10 +2,10 @@
 
 return [
     'plugin' => [
-        'name' => 'depcore.blogpreview::lang.plugin.name',
-        'description' => 'depcore.blogpreview::lang.plugin.description',
+        'name' => 'Podgląd bloga',
+        'description' => 'Dodaje przycisk dzięki któremu można wykonać podgląd wpisu blogowego',
     ],
-    'permissions' => [
-        'some_permission' => 'depcore.blogpreview::lang.permissions.some_permission',
+    'formwidget' => [
+    	'loading' => 'Wczytuję podgląd'
     ],
 ];

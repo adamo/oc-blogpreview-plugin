@@ -1,5 +1,6 @@
 <?php namespace Depcore\Blogpreview;
 
+use Event;
 use Backend;
 use System\Classes\PluginBase;
 
@@ -20,78 +21,35 @@ class Plugin extends PluginBase
             'name'        => 'depcore.blogpreview::lang.plugin.name',
             'description' => 'depcore.blogpreview::lang.plugin.description',
             'author'      => 'depcore',
-            'icon'        => 'icon-leaf'
+            'icon'        => 'icon-eye'
         ];
     }
 
-    /**
-     * Register method, called when the plugin is first registered.
-     *
-     * @return void
-     */
-    public function register()
-    {
-
-    }
-
-    /**
-     * Boot method, called right before the request route.
-     *
-     * @return array
-     */
     public function boot()
     {
+        Event::listen('backend.form.extendFields', function($widget) {
+            if (!($widget->getController() instanceof \RainLab\Blog\Controllers\Posts and $widget->model instanceof \RainLab\Blog\Models\Post)
+
+                || $widget->isNested) {
+                return;
+            }
+
+            $widget->addFields([
+                '_blogpreview' => [
+                    'type'                 => 'Depcore\Blogpreview\FormWidgets\BlogPreview',
+                    'cssClass'             => 'collapse-visible',
+                    'replacePreviewButton' => true
+                ]
+            ]);
+
+        });
 
     }
 
-    /**
-     * Registers any front-end components implemented in this plugin.
-     *
-     * @return array
-     */
-    public function registerComponents()
+    public function registerFormWidgets()
     {
-        return []; // Remove this line to activate
-
         return [
-            'Depcore\Blogpreview\Components\MyComponent' => 'myComponent',
-        ];
-    }
-
-    /**
-     * Registers any back-end permissions used by this plugin.
-     *
-     * @return array
-     */
-    public function registerPermissions()
-    {
-        return []; // Remove this line to activate
-
-        return [
-            'depcore.blogpreview.some_permission' => [
-                'tab' => 'depcore.blogpreview::lang.plugin.name',
-                'label' => 'depcore.blogpreview::lang.permissions.some_permission'
-            ],
-        ];
-    }
-
-    /**
-     * Registers back-end navigation items for this plugin.
-     *
-     * @return array
-     */
-    public function registerNavigation()
-    {
-        return []; // Remove this line to activate
-
-        return [
-            'blogpreview' => [
-                'label'       => 'depcore.blogpreview::lang.plugin.name',
-                'url'         => Backend::url('depcore/blogpreview/mycontroller'),
-                'icon'        => 'icon-leaf',
-                'permissions' => ['depcore.blogpreview.*'],
-                'order'       => 500,
-            ],
+            'Depcore\Blogpreview\FormWidgets\BlogPreview' => 'blogpreview'
         ];
     }
 

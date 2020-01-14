@@ -2,10 +2,10 @@
 
 return [
     'plugin' => [
-        'name' => 'blogpreview',
-        'description' => 'No description provided yet...',
+        'name' => 'Blog preview',
+        'description' => 'Provides a button to preview the blog post.',
     ],
-    'permissions' => [
-        'some_permission' => 'Permission example',
+    'formwidget' => [
+    	'loading' => 'Loading preview'
     ],
 ];
